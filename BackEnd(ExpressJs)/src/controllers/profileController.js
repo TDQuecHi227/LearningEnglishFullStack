@@ -1,0 +1,63 @@
+const profileService = require("../services/profileService");
+const httpStatus = require("http-status").status || require("http-status");
+
+const buildProfileResponse = (user) => ({
+  userId: user._id,
+  username: user.username,
+  email: user.email,
+  role: user.role,
+  profile: user.profile,
+  createdAt: user.createdAt,
+  updatedAt: user.updatedAt,
+});
+
+const getProfile = async (req, res) => {
+  try {
+    const user = await profileService.getUserProfile(req.user.id);
+
+    return res.status(httpStatus.OK).json({
+      message: "Lấy thông tin profile thành công",
+      data: buildProfileResponse(user),
+    });
+  } catch (error) {
+    if (error.message === "USER_NOT_FOUND") {
+      return res.status(httpStatus.NOT_FOUND).json({ message: "Không tìm thấy người dùng." });
+    }
+
+    console.error(error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Lỗi server nội bộ." });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const user = await profileService.updateUserProfile(req.user.id, req.body);
+
+    return res.status(httpStatus.OK).json({
+      message: "Cập nhật profile thành công",
+      data: buildProfileResponse(user),
+    });
+  } catch (error) {
+    if (error.message === "USER_NOT_FOUND") {
+      return res.status(httpStatus.NOT_FOUND).json({ message: "Không tìm thấy người dùng." });
+    }
+
+    if (error.message === "NO_PROFILE_DATA") {
+      return res.status(httpStatus.BAD_REQUEST).json({
+        message: "Vui lòng cung cấp ít nhất một trường để cập nhật.",
+      });
+    }
+
+    console.error(error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Lỗi server nội bộ." });
+  }
+};
+
+const userProfile = getProfile;
+const adminProfile = getProfile;
+
+module.exports = {
+  userProfile,
+  adminProfile,
+  updateProfile,
+};
