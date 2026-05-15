@@ -49,6 +49,7 @@ const initAuthRoute = (app) => {
     authController.resetPassword,
   );
 
+  router.post("/logout", authController.logout);
   return app.use("/api/auth", router);
 };
 

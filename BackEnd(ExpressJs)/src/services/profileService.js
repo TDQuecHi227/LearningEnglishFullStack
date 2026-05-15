@@ -32,9 +32,15 @@ const updateUserProfile = async (userId, payload) => {
     throw new Error("NO_PROFILE_DATA");
   }
 
+  // Chuyển đổi sang dot notation để tránh ghi đè toàn bộ object profile
+  const updatePayload = {};
+  for (const key in profileData) {
+    updatePayload[`profile.${key}`] = profileData[key];
+  }
+
   const user = await User.findByIdAndUpdate(
     userId,
-    { $set: { profile: profileData } },
+    { $set: updatePayload },
     { new: true, runValidators: true },
   ).select("username email role profile createdAt updatedAt");
 
