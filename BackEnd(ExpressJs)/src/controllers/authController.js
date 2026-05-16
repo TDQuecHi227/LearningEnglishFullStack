@@ -1,5 +1,5 @@
 const authService = require("../services/authService");
-const httpStatus = require("http-status").status
+const httpStatus = require("http-status").status;
 
 const login = async (req, res) => {
   try {
@@ -163,6 +163,16 @@ const resetPassword = async (req, res) => {
   }
 };
 
+const logout = (req, res) => {
+  try {
+    res.clearCookie("jwt");
+    res.clearCookie("refreshToken");
+    return res.status(httpStatus.OK).json({ message: "Đăng xuất thành công" })
+  } catch (error) {
+    console.error("Logout Error:", error);
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ message: "Lỗi server nội bộ" })
+  }
+}
 module.exports = {
   login,
   googleLogin,
@@ -170,4 +180,5 @@ module.exports = {
   verifyOtp,
   resetPassword,
   register,
+  logout,
 };
