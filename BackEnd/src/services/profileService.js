@@ -41,7 +41,7 @@ const updateUserProfile = async (userId, payload) => {
   const user = await User.findByIdAndUpdate(
     userId,
     { $set: updatePayload },
-    { new: true, runValidators: true },
+    { returnDocument: "after", runValidators: true },
   ).select("username email role profile createdAt updatedAt");
 
   if (!user) {
