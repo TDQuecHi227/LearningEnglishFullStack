@@ -41,7 +41,7 @@ const loginUser = async (identifier, password) => {
 };
 
 const registerUser = async (userData) => {
-  const { username, email, password } = userData;
+  const { username, email, password, role } = userData;
 
   const existingUser = await User.findOne({ $or: [{ email }, { username }] });
   if (existingUser) {
@@ -56,6 +56,7 @@ const registerUser = async (userData) => {
     username,
     email,
     password: hashedPassword,
+    role: role || 'user',
     isVerified: false,
     otp: { code: hashedOtp, expiresAt },
   });

@@ -73,67 +73,165 @@ const seedAll = async () => {
     const students = users.filter(u => u.role === "user");
     console.log(`✅ Seeded ${users.length} Users (1 admin, 2 teachers, 3 students)`);
 
-    // ═══════════════ 2. COURSES (6 khóa: 2 promo, 2 bestseller, 2 newest) ═══════════════
+    // ═══════════════ 2. COURSES (15 khóa: 5 promo, 5 bestseller, 5 newest) ═══════════════
     const now = new Date();
     const courses = await Course.insertMany([
-      // --- Nhóm KHUYẾN MÃI (có discountPrice, enroll thấp, ngày cũ) ---
+      // --- Nhóm KHUYẾN MÃI (5 khóa: có discountPrice, enroll thấp, ngày cũ) ---
       {
         teacherId: teachers[0]._id, title: "IELTS Speaking – Chinh phục Band 7.0",
         description: "Khóa học luyện Speaking IELTS từ cơ bản đến nâng cao, cam kết đầu ra Band 7.0.",
         category: "IELTS", level: "intermediate", tags: ["ielts", "speaking"],
         price: 1200000, discountPrice: 599000, status: "published",
-        totalEnrollments: 25, averageRating: 4.8, totalRatings: 12,
+        totalEnrollments: 25, averageRating: 4.8, totalRatings: 12, views: 240,
         publishedAt: new Date(now.getTime() - 30 * 86400000),
         createdAt: new Date(now.getTime() - 30 * 86400000),
+        images: [],
       },
       {
         teacherId: teachers[1]._id, title: "TOEIC Listening – Từ 400 lên 700+",
         description: "Phương pháp nghe hiểu TOEIC hiệu quả, tăng 300 điểm chỉ trong 2 tháng.",
         category: "TOEIC", level: "beginner", tags: ["toeic", "listening"],
         price: 800000, discountPrice: 399000, status: "published",
-        totalEnrollments: 40, averageRating: 4.6, totalRatings: 18,
+        totalEnrollments: 40, averageRating: 4.6, totalRatings: 18, views: 310,
         publishedAt: new Date(now.getTime() - 25 * 86400000),
         createdAt: new Date(now.getTime() - 25 * 86400000),
+        images: [],
       },
-      // --- Nhóm BÁN CHẠY (không discount, enroll cao, ngày trung bình) ---
+      {
+        teacherId: teachers[0]._id, title: "Tiếng Anh Giao Tiếp Cho Người Đi Làm",
+        description: "Học giao tiếp thực tế qua các tình huống công sở chuyên nghiệp.",
+        category: "Giao tiếp", level: "intermediate", tags: ["giao-tiep", "work"],
+        price: 1500000, discountPrice: 799000, status: "published",
+        totalEnrollments: 18, averageRating: 4.7, totalRatings: 9, views: 185,
+        publishedAt: new Date(now.getTime() - 22 * 86400000),
+        createdAt: new Date(now.getTime() - 22 * 86400000),
+        images: [],
+      },
+      {
+        teacherId: teachers[1]._id, title: "Luyện Viết IELTS Writing Task 1 & 2",
+        description: "Phân tích đề bài, lập dàn ý và phát triển ý tưởng đạt band 6.5+.",
+        category: "IELTS", level: "intermediate", tags: ["ielts", "writing"],
+        price: 1350000, discountPrice: 699000, status: "published",
+        totalEnrollments: 32, averageRating: 4.9, totalRatings: 15, views: 290,
+        publishedAt: new Date(now.getTime() - 20 * 86400000),
+        createdAt: new Date(now.getTime() - 20 * 86400000),
+        images: [],
+      },
+      {
+        teacherId: teachers[0]._id, title: "Từ Vựng Tiếng Anh Giao Tiếp Cơ Bản",
+        description: "Học 500 từ vựng thông dụng nhất dùng trong đời sống hàng ngày.",
+        category: "Từ vựng", level: "beginner", tags: ["vocabulary", "communication"],
+        price: 600000, discountPrice: 299000, status: "published",
+        totalEnrollments: 55, averageRating: 4.5, totalRatings: 20, views: 450,
+        publishedAt: new Date(now.getTime() - 18 * 86400000),
+        createdAt: new Date(now.getTime() - 18 * 86400000),
+        images: [],
+      },
+
+      // --- Nhóm BÁN CHẠY (5 khóa: không discount, enroll cao, ngày trung bình) ---
       {
         teacherId: teachers[0]._id, title: "Hack Não 1500 Từ Vựng Tiếng Anh",
         description: "Phương pháp ghi nhớ từ vựng bằng hình ảnh và âm thanh, nhớ lâu gấp 5 lần.",
         category: "Từ vựng", level: "beginner", tags: ["vocabulary", "hack-nao"],
         price: 650000, discountPrice: null, status: "published",
-        totalEnrollments: 1200, averageRating: 4.9, totalRatings: 350,
+        totalEnrollments: 1200, averageRating: 4.9, totalRatings: 350, views: 8900,
         publishedAt: new Date(now.getTime() - 15 * 86400000),
         createdAt: new Date(now.getTime() - 15 * 86400000),
+        images: [],
       },
       {
         teacherId: teachers[1]._id, title: "Ngữ Pháp Tiếng Anh Trọn Đời",
         description: "Hệ thống ngữ pháp từ A-Z, dễ hiểu cho mọi trình độ.",
         category: "Ngữ pháp", level: "intermediate", tags: ["grammar", "foundation"],
         price: 450000, discountPrice: null, status: "published",
-        totalEnrollments: 980, averageRating: 4.7, totalRatings: 280,
+        totalEnrollments: 980, averageRating: 4.7, totalRatings: 280, views: 6500,
         publishedAt: new Date(now.getTime() - 10 * 86400000),
         createdAt: new Date(now.getTime() - 10 * 86400000),
+        images: [],
       },
-      // --- Nhóm MỚI NHẤT (không discount, enroll thấp, ngày mới) ---
+      {
+        teacherId: teachers[0]._id, title: "Bí Quyết Đạt Điểm Tuyệt Đối TOEIC 990",
+        description: "Mẹo làm bài, tránh bẫy đề thi và quản lý thời gian thi hiệu quả.",
+        category: "TOEIC", level: "advanced", tags: ["toeic", "990"],
+        price: 1100000, discountPrice: null, status: "published",
+        totalEnrollments: 850, averageRating: 4.8, totalRatings: 190, views: 5200,
+        publishedAt: new Date(now.getTime() - 12 * 86400000),
+        createdAt: new Date(now.getTime() - 12 * 86400000),
+        images: [],
+      },
+      {
+        teacherId: teachers[1]._id, title: "English For Daily Life – Đời Sống Mỹ",
+        description: "Giao tiếp tự nhiên như người bản xứ trong mọi bối cảnh thường ngày.",
+        category: "Giao tiếp", level: "beginner", tags: ["giao-tiep", "daily"],
+        price: 500000, discountPrice: null, status: "published",
+        totalEnrollments: 720, averageRating: 4.6, totalRatings: 145, views: 4800,
+        publishedAt: new Date(now.getTime() - 9 * 86400000),
+        createdAt: new Date(now.getTime() - 9 * 86400000),
+        images: [],
+      },
+      {
+        teacherId: teachers[0]._id, title: "IELTS Reading & Listening Masterclass",
+        description: "Phương pháp nâng band đọc và nghe hiệu quả nhất được đúc kết từ cựu giám khảo.",
+        category: "IELTS", level: "advanced", tags: ["ielts", "reading", "listening"],
+        price: 1600000, discountPrice: null, status: "published",
+        totalEnrollments: 650, averageRating: 4.9, totalRatings: 210, views: 4100,
+        publishedAt: new Date(now.getTime() - 14 * 86400000),
+        createdAt: new Date(now.getTime() - 14 * 86400000),
+        images: [],
+      },
+
+      // --- Nhóm MỚI NHẤT (5 khóa: không discount, enroll thấp, ngày mới) ---
       {
         teacherId: teachers[0]._id, title: "Phát Âm Chuẩn Bản Xứ Trong 30 Ngày",
         description: "Luyện phát âm IPA chuẩn Anh-Mỹ với giáo viên bản ngữ.",
         category: "Phát âm", level: "beginner", tags: ["pronunciation", "ipa"],
         price: 550000, discountPrice: null, status: "published",
-        totalEnrollments: 8, averageRating: 5.0, totalRatings: 3,
+        totalEnrollments: 8, averageRating: 5.0, totalRatings: 3, views: 120,
         publishedAt: new Date(now.getTime() - 2 * 3600000),
         createdAt: new Date(now.getTime() - 2 * 3600000),
+        images: [],
       },
       {
         teacherId: teachers[1]._id, title: "Tiếng Anh Chuyên Ngành CNTT",
         description: "Từ vựng và giao tiếp tiếng Anh dành riêng cho dân IT.",
         category: "Chuyên ngành", level: "advanced", tags: ["it-english", "technical"],
         price: 900000, discountPrice: null, status: "published",
-        totalEnrollments: 3, averageRating: 0, totalRatings: 0,
+        totalEnrollments: 3, averageRating: 0, totalRatings: 0, views: 65,
         publishedAt: now, createdAt: now,
+        images: [],
+      },
+      {
+        teacherId: teachers[0]._id, title: "Tiếng Anh Cho Người Mất Gốc Từ Đầu",
+        description: "Xây dựng lại nền tảng phát âm, ngữ pháp và từ vựng cốt lõi cực kỳ đơn giản.",
+        category: "Ngữ pháp", level: "beginner", tags: ["mat-goc", "foundation"],
+        price: 490000, discountPrice: null, status: "published",
+        totalEnrollments: 5, averageRating: 5.0, totalRatings: 1, views: 95,
+        publishedAt: new Date(now.getTime() - 12 * 3600000),
+        createdAt: new Date(now.getTime() - 12 * 3600000),
+        images: [],
+      },
+      {
+        teacherId: teachers[1]._id, title: "Luyện Thi TOEIC Speaking & Writing",
+        description: "Khóa học định hướng 2 kỹ năng thi nói viết theo cấu trúc đề thi mới nhất.",
+        category: "TOEIC", level: "intermediate", tags: ["toeic", "speaking", "writing"],
+        price: 1250000, discountPrice: null, status: "published",
+        totalEnrollments: 2, averageRating: 0, totalRatings: 0, views: 50,
+        publishedAt: new Date(now.getTime() - 5 * 3600000),
+        createdAt: new Date(now.getTime() - 5 * 3600000),
+        images: [],
+      },
+      {
+        teacherId: teachers[0]._id, title: "English for Travel – Tiếng Anh Du Lịch",
+        description: "Bộ câu hỏi và từ vựng thông dụng giúp bạn tự tin du lịch khắp năm châu.",
+        category: "Giao tiếp", level: "beginner", tags: ["travel", "communication"],
+        price: 400000, discountPrice: null, status: "published",
+        totalEnrollments: 1, averageRating: 0, totalRatings: 0, views: 75,
+        publishedAt: new Date(now.getTime() - 1 * 3600000),
+        createdAt: new Date(now.getTime() - 1 * 3600000),
+        images: [],
       },
     ]);
-    console.log(`✅ Seeded ${courses.length} Courses (2 promo, 2 bestseller, 2 newest)`);
+    console.log(`✅ Seeded ${courses.length} Courses (5 promo, 5 bestseller, 5 newest)`);
 
     // ═══════════════ 3. FLASHCARD SETS ═══════════════
     const sets = await FlashcardSet.insertMany([

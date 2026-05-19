@@ -7,7 +7,9 @@ const getAllCourses = async (req, res) => {
         const filters = {
             search: req.query.search || "",
             category: req.query.category || "All",
-            priceType: req.query.priceType || "all"
+            priceType: req.query.priceType || "all",
+            level: req.query.level || "All",
+            sortBy: req.query.sortBy || "newest"
         };
 
         const courses = await courseService.getAllCourses(page, limit, filters);

@@ -16,19 +16,25 @@ const getHomePageData = async () => {
 
     const bestSellingCoursesPromise = Course.find(baseQuery)
         .sort({ totalEnrollments: -1 })
-        .limit(4);
+        .limit(10);
 
-    const [promotionalCourses, newestCourses, bestSellingCourses] =
+    const mostViewedCoursesPromise = Course.find(baseQuery)
+        .sort({ views: -1 })
+        .limit(10);
+
+    const [promotionalCourses, newestCourses, bestSellingCourses, mostViewedCourses] =
         await Promise.all([
             promotionalCoursesPromise,
             newestCoursesPromise,
             bestSellingCoursesPromise,
+            mostViewedCoursesPromise,
         ]);
 
     return {
         promotionalCourses,
         newestCourses,
         bestSellingCourses,
+        mostViewedCourses,
     };
 };
 

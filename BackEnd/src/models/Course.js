@@ -22,6 +22,10 @@ const courseSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    images: {
+      type: [String],
+      default: [], // Danh sách ảnh của khóa học
+    },
     introVideoUrl: {
       type: String,
       default: "", // video giới thiệu khóa
@@ -95,6 +99,10 @@ const courseSchema = new mongoose.Schema(
       default: 0,
     },
     totalRatings: {
+      type: Number,
+      default: 0,
+    },
+    views: {
       type: Number,
       default: 0,
     },

@@ -14,6 +14,11 @@ const getAllCourses = async (page = 1, limit = 9, filters = {}) => {
             query.category = filters.category;
         }
 
+        // Lọc theo cấp độ
+        if (filters.level && filters.level !== "All") {
+            query.level = filters.level;
+        }
+
         // Lọc theo giá (Miễn phí/Có phí)
         if (filters.priceType === "free") {
             query.price = 0;
@@ -21,12 +26,24 @@ const getAllCourses = async (page = 1, limit = 9, filters = {}) => {
             query.price = { $gt: 0 };
         }
 
+        // Sắp xếp
+        let sortOption = { createdAt: -1 }; // Mặc định mới nhất
+        if (filters.sortBy === "priceAsc") {
+            sortOption = { price: 1 };
+        } else if (filters.sortBy === "priceDesc") {
+            sortOption = { price: -1 };
+        } else if (filters.sortBy === "popular") {
+            sortOption = { totalEnrollments: -1 };
+        } else if (filters.sortBy === "rating") {
+            sortOption = { averageRating: -1 };
+        }
+
         const [courses, totalCourses] = await Promise.all([
             Course.find(query)
                 .populate("teacherId", "username email")
                 .skip(skip)
                 .limit(limit)
-                .sort({ createdAt: -1 }),
+                .sort(sortOption),
             Course.countDocuments(query)
         ]);
 
@@ -47,7 +64,11 @@ const getAllCourses = async (page = 1, limit = 9, filters = {}) => {
 
 const getCourseById = async (id) => {
     try {
-        const course = await Course.findById(id).populate("teacherId", "username email");
+        const course = await Course.findByIdAndUpdate(
+            id,
+            { $inc: { views: 1 } },
+            { new: true }
+        ).populate("teacherId", "username email");
         return course;
     }
     catch (error) {
